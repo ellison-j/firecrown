@@ -7,6 +7,7 @@ from cosmosis.datablock import names, option_section
 from tjpcosmo.analyses import Analysis
 from tjpcosmo.likelihood import BaseLikelihood
 from tjpcosmo.parameters import ParameterSet
+from tjpcosmo.analyses import TheoryCalculator
 from Philscosmobase import CosmoBase
 import pathlib
 import yaml
@@ -35,14 +36,51 @@ def setup(options):
     
     consistency = parameter_consistency.cosmology_consistency()
 
-    # Get any metadata
-    model_name = config['name']
-    model_class = Analysis.from_name(model_name)
-    likelihood_class = BaseLikelihood.from_name(likelihood_name)
 
-    # Create the model using the yaml config info
-    model = model_class(config, data_info, likelihood_class)
-    # Return model and likelihood
+    calculators = {
+        stat_name: TheoryCalculator.from_name(stat_name)
+        for stat_name in config['statistics'].keys()
+    }
+
+    for like_name, like_info in config['likelihoods']:
+        like_type = like_info['type']
+        like = BaseLikelihood.from_name(like_type)
+        stat_names = like_info['statistics']
+
+        data_filename = like_info['file']
+        data, metadata = load_sacc(data_filename)
+
+        my_calculators = [
+            calculators[stat_name](config, metadata) for stat_name in stat_names
+        ]
+
+        for stat_name in stat_names:
+            stat_config = config['statistics'][stat_name]
+
+        Analysis(my_calculators, likelihood, data_info, config)
+        
+
+
+
+
+    # # Get any metadata
+    # model_name = config['name']
+    # analysis_names = config['statistics'].keys()
+    # classes = [Analysis.from_name(analysis_name) for analysis_name in analysis_names]
+
+
+
+    # for like_name, like_info in config['likelihoods'].items():
+    #     like_class = BaseLikelihood.from_name(like_info['type'])
+
+        
+
+
+    # likelihood_class = BaseLikelihood.from_name(likelihood_name)
+
+    # # Create the model using the yaml config info
+    # model = model_class(config, data_info, likelihood_class)
+    # # Return model and likelihood
     return model, consistency
 
 def execute(block, config):

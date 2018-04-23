@@ -1,6 +1,7 @@
 from ..systematics import Systematic, SourceSystematic, OutputSystematic, CosmologySystematic
 from .sources import make_source
 
+calculators_registry = {}
 
 class TheoryCalculator:
     def __init__(self, config, metadata):
@@ -13,6 +14,19 @@ class TheoryCalculator:
         self.source_by_name = config['name']
         self.setup_systematics(config['systematics'])
         self.setup_sources(config)
+
+
+    def __init_subclass__(cls, **kwargs):
+        super().__init_subclass__(**kwargs)
+        name = cls.name if hasattr(cls, 'name') else cls.__name__
+        name = name.lower()
+        print(f"Register {name}")
+        calculators_registry[name] = cls
+
+    @classmethod
+    def from_name(cls, name):
+        return calculators_registry[name.lower()]
+
 
     def validate(self):
         """Validating the inputs, This function is missing for now, implement it later"""

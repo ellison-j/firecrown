@@ -35,7 +35,7 @@ def twopoint_process_sacc(sacc_data,config):
     indices=[]
     pair_ordering=[]
     dict_types={'ClGG':'FF','ClGE':'FF','ClEE':'FF','XiGG':'+R','XiGE':'+R','XiP':'+R','XiM':'-R'} #Dictionary between SACC 2-point types and TJPCosmo 2-point types
-    for xcor,d in config['statistics'].items() :
+    for xcor,d in config['statistics']['twopoint'].items() :
         tns=sorted([tracer_numbers[n] for n in d['source_names']])
         typ=dict_types[d['corr_type']]
         id_xcor=np.where((t1_list==tns[0]) & (t2_list==tns[1]) & (typ_list==typ))[0]

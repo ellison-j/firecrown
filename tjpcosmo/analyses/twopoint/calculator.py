@@ -58,6 +58,7 @@ def convert_cosmobase_to_ccl(cosmo_base):
     return params
 
 class TwoPointTheoryCalculator(TheoryCalculator):
+    name = 'twopoint'
     def __init__(self, config, metadata):
         super().__init__(config, metadata)
 
