@@ -1,0 +1,52 @@
+# Not working yet!
+
+
+# a single correlated_probe generates one likelihood, independent (factorized) from all the other
+# correlated_probes.
+# cosmology-level systematics are shared between all these probes
+# other systematics (source-level and statistics-level) are not
+correlated_probes: [supernovae]
+# or e.g.:
+# correlated_probes: supernova tx
+
+sampling:
+    sampler: grid
+    grid:
+        nsample_dimension: 20
+    test:
+        fatal_errors: T
+
+output:
+    filename: grid.txt
+
+
+
+parameters:
+    cosmological_parameters:
+        Omega_k: 0.0
+        Omega_c:  0.27
+        Omega_b: 0.045
+        h: 0.67
+        n_s: 0.96
+        sigma_8: 0.8
+
+
+cosmology_systematics: {}
+
+supernovae:
+    data:
+        filename: test/sims/example-y1-sn.hdf
+    likelihood:
+        type: gaussian
+    sources:
+        sample_ia_spectro:
+            type: SN
+            systematics: []
+    statistics:
+        hubble_diagram_spec:
+            type: binned_m
+            sources: [  ]
+            zmin: 0.0
+            zmax: 1.0
+            systematics: [photometric_calibration]
+    systematics: {}
