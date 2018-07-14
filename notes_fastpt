@@ -1,0 +1,5 @@
+specify systematics
+source systematics function reads this. organizes params. adds to two_point.FASTPT attribute the relevant FAST-PT keyword
+
+the calculator has a function that calls FAST-PT from info in two_point.FASTPT. this creates an array (or splines) which are passed to CCL.
+
