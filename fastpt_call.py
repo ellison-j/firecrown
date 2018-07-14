@@ -1,10 +1,11 @@
 """
 TJPCosmo wrapper for FASTPT, to call CCL for Pk, return relevant FASTPT quantities.
 """
+import sys
 import numpy as np
 from scipy.interpolate import interp1d
 
-import FASTPT
+import FASTPT.FASTPT as FASTPT
 from FASTPT.info import __version__
 
 #Version check
@@ -14,14 +15,20 @@ print('This is FAST-PT version', __version__)
 version_major = int(float(__version__))
 
 ### Do a version check ###
-assert version_major == version_major_needed,'TJPCosmo requires FASTPT v2.X'
-
+try:
+    assert version_major == version_major_needed,'TJPCosmo requires FASTPT v2.X'
+except AssertionError as e:
+    raise
+    #sys.exit(1)
 #####
 
 # Get to_do list for FASTPT from the relevant analysis object attribute
 # which has been populated by parsing the YAML file for source systematics
-fastpt_to_do = two_point.fastpt
+#fastpt_to_do = two_point.fastpt #replace with relevant attribute when available
 # Note, FASTPTv2 uses a to_do list. v1 does not. We hope to re-write code for v3 to remove need for to-do list.
+
+#temporary hack to test code:
+fastpt_to_do = ['dd_bias']
 
 
 ######
@@ -30,26 +37,32 @@ fastpt_to_do = two_point.fastpt
 
 # CCL call to get power spectrum
 
-k_CCL = 
-Plin_CCL = 
+#temporary hack to test code
+d=np.loadtxt('FASTPT/Pk_test.dat') 
+k_CCL = d[:,0]
+Plin_CCL = d[:,1]
 
 # check for log spacing
 # broadcast onto a log spaced grid if necessary
 
 dk=np.diff(np.log(k_CCL))
-delta_L=(log(k_CCL[-1])-log(k_CCL[0]))/(k_CCL.size-1)
+delta_L=(np.log(k_CCL[-1])-np.log(k_CCL[0]))/(k_CCL.size-1)
 dk_test=np.ones_like(dk)*delta_L
 		
 try:
     log_sample_test='FASTPT requires log spaced k values. Creating log-spaced k array now.'
     np.testing.assert_array_almost_equal(dk, dk_test, decimal=4, err_msg=log_sample_test, verbose=False)
     # how should this be handled? Does it return TRUE/FALSE?
+    k=k_CCL
+    P=Plin_CCL
 except AssertionError:
+    print(log_sample_test)
     nk = 4*len(k_CCL) # resolution should be optimized or we should allow it to be specified. Higher res increasese runtime.
-    k = np.logspace(k_CCL[0], k_CCL[-1], nk)
+    k = np.logspace(np.log10(k_CCL[0]), np.log10(k_CCL[-1]), nk)
     klog=np.log(k)
-    Plininterp = interp1d(np.log(k_CCL), np.log(Plin_CCL))
+    Plininterp = interp1d(np.log(k_CCL), np.log(Plin_CCL), bounds_error=False, fill_value='extrapolate')
     Plin = np.exp(Plininterp(klog))
+    P=Plin
     
 # change resolution even for input log spaced k grid?
 
