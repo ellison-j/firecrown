@@ -1,0 +1,256 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>The Yaml File &#8212; TJPCosmo  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Welcome to TJPCosmo’s documentation!" href="../index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="the-yaml-file">
+<h1>The Yaml File<a class="headerlink" href="#the-yaml-file" title="Permalink to this headline">¶</a></h1>
+<p>The Yaml file is the central file for TJPCosmo. The Yaml file needs to be specified in the call to TJPCosmo:</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Python3</span> <span class="nb">bin</span><span class="o">/</span><span class="n">tjpcosmo</span> <span class="n">test</span><span class="o">/</span><span class="n">example</span><span class="o">.</span><span class="n">yaml</span>
+</pre></div>
+</div>
+<p>see for example test/3x2pt.yaml</p>
+<p>The structure of the Yaml file:
+The Yaml file is build up in sections, but before you need to specify  correlated probes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">correlated_probes</span><span class="p">:</span> <span class="p">[</span><span class="n">twopoint</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="section" id="sections">
+<h2>Sections:<a class="headerlink" href="#sections" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="sampling">
+<h3>Sampling:<a class="headerlink" href="#sampling" title="Permalink to this headline">¶</a></h3>
+<p>First section is to select witch sampler to use.</p>
+<p>This is done by specifying the name of the sampler, the details of the grid, the test, the maximum likelihood details and the fisher matrix if it exists.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sampler</span><span class="p">:</span> <span class="n">test</span>
+<span class="n">grid</span><span class="p">:</span>
+    <span class="n">nsample_dimension</span><span class="p">:</span> <span class="mi">20</span>
+<span class="n">test</span><span class="p">:</span>
+    <span class="n">fatal_errors</span><span class="p">:</span> <span class="n">T</span>
+    <span class="n">save_dir</span><span class="p">:</span> <span class="mi">3</span><span class="n">x2pt</span>
+<span class="n">maxlike</span><span class="p">:</span>
+    <span class="n">maxiter</span><span class="p">:</span> <span class="mi">1000</span>
+    <span class="n">tolerance</span><span class="p">:</span> <span class="mf">0.01</span>
+    <span class="n">output_ini</span><span class="p">:</span> <span class="n">best</span><span class="o">.</span><span class="n">ini</span>
+<span class="n">fisher</span> <span class="p">:</span> <span class="p">{}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="output">
+<h3>Output:<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h3>
+<p>Specify the file for the output</p>
+</div>
+<div class="section" id="parameters">
+<h3>Parameters:<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h3>
+<p>In this section you specify the parameters used, this includes all cosmological parameters, along with bias parameters, and intrinsic alignment parameters.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cosmological_parameters</span><span class="p">:</span>
+    <span class="n">Omega_k</span><span class="p">:</span> <span class="mf">0.0</span>
+    <span class="n">Omega_c</span><span class="p">:</span>  <span class="mf">0.27</span>
+    <span class="n">Omega_b</span><span class="p">:</span> <span class="mf">0.045</span>
+    <span class="n">h</span><span class="p">:</span> <span class="mf">0.67</span>
+    <span class="n">n_s</span><span class="p">:</span> <span class="mf">0.96</span>
+    <span class="c1">#A_s: 2.1e-9</span>
+    <span class="n">sigma_8</span><span class="p">:</span> <span class="mf">0.8</span>
+<span class="n">linear_bias_lowz</span><span class="p">:</span>
+    <span class="n">b</span><span class="p">:</span> <span class="p">[</span><span class="mf">3.1</span><span class="p">,</span> <span class="mf">3.141592653589793</span><span class="p">,</span> <span class="mf">3.2</span><span class="p">]</span>
+    <span class="c1"># test using the default values for these:</span>
+    <span class="c1"># z_piv: 0.5</span>
+    <span class="n">alphaz</span><span class="p">:</span> <span class="mf">0.0</span>
+    <span class="n">alphag</span><span class="p">:</span> <span class="mf">0.0</span>
+
+<span class="n">linear_bias_highz</span><span class="p">:</span>
+    <span class="n">b</span><span class="p">:</span> <span class="o">-</span><span class="mf">666.6</span>  <span class="c1"># not currently used</span>
+    <span class="n">z_piv</span><span class="p">:</span> <span class="mf">0.0</span>
+    <span class="n">alphaz</span><span class="p">:</span> <span class="mf">0.0</span>
+
+<span class="n">linear_ia</span><span class="p">:</span>
+    <span class="n">biasia</span><span class="p">:</span> <span class="mf">0.03141592653589793</span>
+    <span class="c1"># fred: 0.5</span>
+
+<span class="n">wl_pz_shift</span><span class="p">:</span>
+    <span class="n">delta_z</span><span class="p">:</span>  <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]</span>
+
+<span class="n">multiplicative_shear_bias</span><span class="p">:</span>
+    <span class="n">m</span><span class="p">:</span> <span class="mf">0.0</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="cosmology-systematics">
+<h3>Cosmology systematics:<a class="headerlink" href="#cosmology-systematics" title="Permalink to this headline">¶</a></h3>
+<p>Any systematics for just the cosmology part. These are shared across probes.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">baryons</span><span class="p">:</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="n">BaryonEffects</span>
+    <span class="n">kmin</span><span class="p">:</span> <span class="mi">1000</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="the-probe">
+<h3>The Probe:<a class="headerlink" href="#the-probe" title="Permalink to this headline">¶</a></h3>
+<p>Next specify the details of one probe. First you need to specify the data and likelihood. This means specifying the name and location of the data to run, this is assumed to be in the form of a .sacc file. The likelihood means deciding the type of likelihood, the choices are:</p>
+<p>INSERT LIST OF LIKELIHOOD FUNCTIONS WE HAVE IMPLEMENTED (For now just gaussian)</p>
+<p>And the covariance correction, by deciding its type and how many realizations.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="p">:</span>
+    <span class="n">filename</span><span class="p">:</span> <span class="n">test</span><span class="o">/</span><span class="n">sims</span><span class="o">/</span><span class="n">c_ell_mean</span><span class="o">.</span><span class="n">sacc</span>
+<span class="n">likelihood</span><span class="p">:</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="n">gaussian</span>
+    <span class="n">cov_correction</span><span class="p">:</span>
+        <span class="nb">type</span><span class="p">:</span> <span class="n">Hartlap</span>
+        <span class="n">realizations</span><span class="p">:</span> <span class="mi">100</span>
+</pre></div>
+</div>
+<p>Next the sources is specified, one probe can have several sources, each source must be given a name, and a type, plus which source systematics that attach to it.</p>
+<p>LIST IMPLEMENTED SOURCES AND SYSTEMATICS.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sources</span><span class="p">:</span>
+    <span class="n">lenses_0</span><span class="p">:</span>
+        <span class="nb">type</span><span class="p">:</span> <span class="n">LSS</span>
+        <span class="n">systematics</span><span class="p">:</span> <span class="p">[</span><span class="n">linear_bias_lowz</span><span class="p">,</span> <span class="n">wl_pz_shift</span><span class="p">]</span>
+    <span class="n">lenses_1</span><span class="p">:</span>
+        <span class="nb">type</span><span class="p">:</span> <span class="n">LSS</span>
+        <span class="n">systematics</span><span class="p">:</span> <span class="p">[</span><span class="n">linear_bias_lowz</span><span class="p">,</span> <span class="n">wl_pz_shift</span><span class="p">]</span>
+    <span class="n">lenses_2</span><span class="p">:</span>
+        <span class="nb">type</span><span class="p">:</span> <span class="n">LSS</span>
+        <span class="n">systematics</span><span class="p">:</span> <span class="p">[</span><span class="n">linear_bias_highz</span><span class="p">,</span> <span class="n">wl_pz_shift</span><span class="p">]</span>
+    <span class="n">sources_2</span><span class="p">:</span>
+        <span class="nb">type</span><span class="p">:</span> <span class="n">WL</span>
+        <span class="n">systematics</span><span class="p">:</span> <span class="p">[</span><span class="n">multiplicative_shear_bias</span><span class="p">,</span><span class="n">linear_ia</span><span class="p">,</span> <span class="n">wl_pz_shift</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Next the list of statistics that the probe have to calculate must be given. These are specified by a name, which then have a type, a list of sources and x_min, an x_max, and a list of which probe specific systematics that the probe have.</p>
+<p>INSERT LIST OF STATISTICS TYPES</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">statistics</span><span class="p">:</span>
+    <span class="n">cl_1_1</span><span class="p">:</span>
+        <span class="nb">type</span><span class="p">:</span> <span class="n">ClGG</span>
+        <span class="n">source_names</span><span class="p">:</span> <span class="p">[</span><span class="n">lenses_1</span><span class="p">,</span> <span class="n">lenses_1</span><span class="p">]</span>
+        <span class="n">x_min</span><span class="p">:</span> <span class="mf">8.0</span>
+        <span class="n">x_max</span><span class="p">:</span> <span class="mf">1000.0</span>
+        <span class="n">systematics</span><span class="p">:</span> <span class="p">[</span><span class="n">additive_shear</span><span class="p">]</span>
+    <span class="n">cl_1_2</span><span class="p">:</span>
+        <span class="nb">type</span><span class="p">:</span> <span class="n">ClGE</span>
+        <span class="n">source_names</span><span class="p">:</span> <span class="p">[</span><span class="n">lenses_1</span><span class="p">,</span> <span class="n">sources_2</span><span class="p">]</span>
+        <span class="n">x_min</span><span class="p">:</span> <span class="mf">8.0</span>
+        <span class="n">x_max</span><span class="p">:</span> <span class="mf">1000.0</span>
+        <span class="n">systematics</span><span class="p">:</span> <span class="p">[</span><span class="n">additive_shear</span><span class="p">]</span>
+    <span class="n">cl_2_2</span><span class="p">:</span>
+        <span class="nb">type</span><span class="p">:</span> <span class="n">ClEE</span>
+        <span class="n">source_names</span><span class="p">:</span> <span class="p">[</span><span class="n">sources_2</span><span class="p">,</span> <span class="n">sources_2</span><span class="p">]</span>
+        <span class="n">x_min</span><span class="p">:</span> <span class="mf">8.0</span>
+        <span class="n">x_max</span><span class="p">:</span> <span class="mf">1000.0</span>
+        <span class="n">systematics</span><span class="p">:</span> <span class="p">[</span><span class="n">additive_shear</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Finally a probe also needs a list of the systematics attached, this list is simply to tell TJPCosmo what type of systematic each named systematic for the probe is. So the list is just the name of the systematic and it’s type:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systematics</span><span class="p">:</span>
+    <span class="n">linear_ia</span><span class="p">:</span>
+        <span class="nb">type</span><span class="p">:</span> <span class="n">LinearAlignment</span>
+    <span class="n">linear_bias_lowz</span><span class="p">:</span>
+        <span class="nb">type</span><span class="p">:</span> <span class="n">LinearBias</span>
+    <span class="n">linear_bias_highz</span><span class="p">:</span>
+        <span class="nb">type</span><span class="p">:</span> <span class="n">LinearBias</span>
+    <span class="n">wl_pz_shift</span><span class="p">:</span>
+        <span class="nb">type</span><span class="p">:</span> <span class="n">PZShift</span>
+    <span class="n">multiplicative_shear_bias</span><span class="p">:</span>
+        <span class="nb">type</span><span class="p">:</span> <span class="n">MultiplicativeShearBias</span>
+    <span class="n">additive_shear</span><span class="p">:</span>
+        <span class="nb">type</span><span class="p">:</span> <span class="n">AdditiveShearBias</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">TJPCosmo</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">The Yaml File</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#sections">Sections:</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../index.html" title="previous chapter">Welcome to TJPCosmo’s documentation!</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Elisabeth Krause, Joe Zuntz, Eske Pedersen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+      |
+      <a href="../_sources/filedescriptions/Yaml.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
