@@ -10,6 +10,7 @@ Welcome to TJPCosmo's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   filedescriptions/Yaml
 
 This will be our front page
 
