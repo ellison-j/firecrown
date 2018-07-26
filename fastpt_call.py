@@ -1,5 +1,6 @@
 """
 TJPCosmo wrapper for FASTPT, to call CCL for Pk, return relevant FASTPT quantities.
+Credit: Some work on this code was completed at the Aspen Center for Physics
 """
 import sys
 import numpy as np
