@@ -86,23 +86,32 @@ to_ccl = {}
 to_ccl['k'] = k
 to_ccl['Plin'] = P
 to_ccl['Pnl'] = P # needs to be updated with halofit or other from CCL
+#update column numbers
 if fastpt.dd_do:
     if fastpt.dd_bias_do:
         P_one_loop_dd = fastpt.one_loop_dd(P,C_window=C_window)
+        to_ccl[dd_1loop] = P_one_loop_dd[0]
     else:
         P_one_loop_dd_bias = fastpt.one_loop_dd_bias(P,C_window=C_window)
+        to_ccl[dd_1loop] = P_one_loop_dd[0]
+        to_ccl[d2d2] = P_one_loop_dd[1]
+        
 
 if fastpt.IA_tt_do:
     P_IA_tt=fastpt.IA_tt(P,C_window=C_window)
+    to_ccl[ia_tt] = P_IA_tt[0]
 
 if fastpt.IA_ta_do:
     P_IA_ta=fastpt.IA_ta(P,C_window=C_window)
+    to_ccl[ia_ta] = P_IA_ta[0]
 
 if fastpt.IA_mix_do:
     P_IA_mix=fastpt.IA_mix(P,C_window=C_window)
+    to_ccl[ia_mix] = P_IA_mix[0]
 
 if fastpt.RSD_do:
     P_RSD=fastpt.RSD_components(P,1.0,C_window=C_window)
+    to_ccl[rsd] = P_RSD[0]
 
 sig4=fastpt.sig4(P,C_window=C_window)
 to_ccl['sig4'] = sig4
