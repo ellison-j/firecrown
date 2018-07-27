@@ -15,7 +15,6 @@ version_major_needed = 2
 print('This is FAST-PT version', __version__)
 version_major = int(float(__version__))
 
-### Do a version check ###
 try:
     assert version_major == version_major_needed,'TJPCosmo requires FASTPT v2.X'
 except AssertionError as e:
@@ -28,7 +27,7 @@ except AssertionError as e:
 #fastpt_to_do = two_point.fastpt #replace with relevant attribute when available
 # Note, FASTPTv2 uses a to_do list. v1 does not. We hope to re-write code for v3 to remove need for to-do list.
 
-#temporary hack to test code:
+#TEMPORARY HACK to test code:
 fastpt_to_do = ['dd_bias']
 
 
@@ -38,7 +37,7 @@ fastpt_to_do = ['dd_bias']
 
 # CCL call to get power spectrum
 
-#temporary hack to test code
+#TEMPORARY HACK to test code
 d=np.loadtxt('FASTPT/Pk_test.dat') 
 k_CCL = d[:,0]
 Plin_CCL = d[:,1]
@@ -53,7 +52,6 @@ dk_test=np.ones_like(dk)*delta_L
 try:
     log_sample_test='FASTPT requires log spaced k values. Creating log-spaced k array now.'
     np.testing.assert_array_almost_equal(dk, dk_test, decimal=4, err_msg=log_sample_test, verbose=False)
-    # how should this be handled? Does it return TRUE/FALSE?
     k=k_CCL
     P=Plin_CCL
 except AssertionError:
@@ -65,11 +63,11 @@ except AssertionError:
     Plin = np.exp(Plininterp(klog))
     P=Plin
     
+# OPTIONAL STEPS THAT COULD BE ADDED HERE    
 # change resolution even for input log spaced k grid?
 
 # extend to high and low k. This can be done internally in FASTPT or separately.
 # Separating the extension step may help if we initialize the k grid a single time.
-
 # right now, done within FASTPT. See below.
 
 ####
@@ -79,12 +77,15 @@ except AssertionError:
 n_pad = len(k)
 fastpt = FASTPT.FASTPT(k, to_do=fastpt_to_do, low_extrap=-5, high_extrap=3, n_pad=n_pad)
 
-
-# Call specific quantities 
+# Call FASTPT to generate requested quantities
 # this will need to be updated if we move away from the to_do list API
 
 C_window=.75 # this could be optimized or made an option
 
+to_ccl = {}
+to_ccl['k'] = k
+to_ccl['Plin'] = P
+to_ccl['Pnl'] = P # needs to be updated with halofit or other from CCL
 if fastpt.dd_do:
     if fastpt.dd_bias_do:
         P_one_loop_dd = fastpt.one_loop_dd(P,C_window=C_window)
@@ -104,3 +105,5 @@ if fastpt.RSD_do:
     P_RSD=fastpt.RSD_components(P,1.0,C_window=C_window)
 
 sig4=fastpt.sig4(P,C_window=C_window)
+to_ccl['sig4'] = sig4
+#Pass pointer to to_ccl dictionary
