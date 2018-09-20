@@ -1,0 +1,143 @@
+# Example parameter file for one analysis using clusters
+
+# a single correlated_probe generates one likelihood, independent (factorized) from all the other
+# correlated_probes.
+# cosmology-level systematics are shared between all these probes
+# other systematics (source-level and statistics-level) are not
+correlated_probes: [stacked_clusters]
+
+sampling:
+    sampler: test
+    grid:
+        nsample_dimension: 20
+    test:
+        fatal_errors: T
+        save_dir: cluster_example
+    maxlike:
+        maxiter: 1000
+        tolerance: 0.01
+        output_ini: best.ini
+    fisher : {}
+
+output:
+    filename: output.txt
+
+parameters:
+    cosmological_parameters:
+        Omega_k: 0.0
+        Omega_c:  0.27
+        Omega_b: 0.045
+        h: 0.67
+        n_s: 0.96
+        #A_s: 2.1e-9
+        sigma_8: 0.8
+    cluster_mass_observable_relation:
+        slope: [0.0, 1.0, 10.]        # slope of the MOR
+        intercept: [10.0, 13.0, 20.0] # intercept, in log_10 of the mass of the MOR
+        scatter: [0.0, 20.0, 100.0]   # percent scatter in P(M|lambda)
+    boost_lowz:
+        r_scale: [0.0, 1.0, 20.0]     # scale radius of boost factor NFW profile
+        B0: [0, 1.0, 100.0]           # boost factor amplitude
+    boost_highz:
+        r_scale: [0.0, 1.0, 20.0]     # scale radius of boost factor NFW profile
+        B0: [0, 1.0, 100.0]           # boost factor amplitude
+    linear_ia:                        # intrinsic alignment
+        biasia: 0.03141592653589793
+        # fred: 0.5
+    wl_pz_shift:                      # photo-z shift
+        delta_z:  [0.0, 0.05, 0.1]
+    multiplicative_shear_bias:
+        m: 0.0
+
+stacked_clusters:
+    data:
+        filename: test/sims/cluster_number_counts_and_gamma.sacc
+    likelihood:
+        type: gaussian
+
+    sources:
+        clusters_z0_l0:
+            type: CL
+            systematics: [cluster_mass_observable_relation, boost_lowz]
+        clusters_z0_l1:
+            type: CL
+            systematics: [cluster_mass_observable_relation, boost_lowz]
+        clusters_z0_l2:
+            type: CL
+            systematics: [cluster_mass_observable_relation, boost_lowz]
+        clusters_z1_l0:
+            type: CL
+            systematics: [cluster_mass_observable_relation, boost_highz]
+        clusters_z1_l1:
+            type: CL
+            systematics: [cluster_mass_observable_relation, boost_highz]
+        clusters_z1_l2:
+            type: CL
+            systematics: [cluster_mass_observable_relation, boost_highz]
+        lsst_sources_0:
+            type: WL
+            systematics: [multiplicative_shear_bias,linear_ia, wl_pz_shift]
+
+    statistics:
+        counts_z0_l0:
+            type: CL_counts
+            source_names: [clusters_z0_l0]
+        counts_z0_l1:
+            type: CL_counts
+            source_names: [clusters_z0_l1]
+        counts_z0_l2:
+            type: CL_counts
+            source_names: [clusters_z0_l2]
+        counts_z1_l0:
+            type: CL_counts
+            source_names: [clusters_z1_l0]
+        counts_z1_l1:
+            type: CL_counts
+            source_names: [clusters_z1_l1]
+        counts_z1_l2:
+            type: CL_counts
+            source_names: [clusters_z1_l2]
+        cluster_lensing_z0_l0_s0:
+            type: gamma_t
+            source_names: [clusters_z0_l0, lsst_sources_0]
+            x_min: 8.0
+            x_max: 1000.0
+        cluster_lensing_z0_l1_s0:
+            type: gamma_t
+            source_names: [clusters_z0_l1, lsst_sources_0]
+            x_min: 8.0
+            x_max: 1000.0
+        cluster_lensing_z0_l2_s0:
+            type: gamma_t
+            source_names: [clusters_z0_l2, lsst_sources_0]
+            x_min: 8.0
+            x_max: 1000.0
+        cluster_lensing_z1_l0_s0:
+            type: gamma_t
+            source_names: [clusters_z1_l0, lsst_sources_0]
+            x_min: 8.0
+            x_max: 1000.0
+        cluster_lensing_z1_l1_s0:
+            type: gamma_t
+            source_names: [clusters_z1_l1, lsst_sources_0]
+            x_min: 8.0
+            x_max: 1000.0
+        cluster_lensing_z1_l2_s0:
+            type: gamma_t
+            source_names: [clusters_z1_l2, lsst_sources_0]
+            x_min: 8.0
+            x_max: 1000.0
+
+    systematics:
+        cluster_mass_observable_relation:
+            type: MORPowerLaw
+        boost_lowz:
+            type: BoostFactorProfile
+        boost_highz:
+            type: BoostFactorProfile
+        multiplicative_shear_bias:
+            type: MultiplicativeShearBias
+        linear_ia:
+            type: LinearAlignment
+        wl_pz_shift:
+            type: PZShift
