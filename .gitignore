@@ -1,6 +1,27 @@
+# emacs backup files
+*~
+
 sandbox/.ipynb_checkpoints/*
 env/
 dist/
 build/
 __pycache__/
 
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
