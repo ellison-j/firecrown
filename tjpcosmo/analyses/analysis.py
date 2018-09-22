@@ -1,4 +1,5 @@
 from .twopoint import TwoPointDataSet
+from .counts_x_twopoint import CountsXTwoPointDataSet
 from ..sources import make_source
 from .base_calculator import TheoryCalculator
 from .base_theory_results import TheoryResults
@@ -46,7 +47,9 @@ class Analysis:
         """
 
         # Call other class methods that create the different components of an
-        # Analysis
+        # analysis. First create the data and metadata.
+        # Next, instantiate the systematics, sources and calculators.
+        # Finally, the likelihood.
         data, metadata = cls.create_data(info)
         systematics = cls.create_systematics(info)
         sources = cls.create_sources(info, systematics, metadata)
@@ -68,9 +71,24 @@ class Analysis:
         """
 
         """
-        filename = info['data']['filename']
+        #Assemble a list of types of all of the statistics.
+        #For instance, a 3x2pt analysis will have Cl and Xi types.
+        #a cluster analysis will have CL_counts and gamma_t types.
+        #These types are used to figure out which DataSet subtype to use to load.
+        statistics_types = list(set([info['statistics'][key]['type'] for key in info['statistics'].keys()]))
+        print("\tStatistics types in this analysis block:")
+        filename = info['data']['filename']        
         if filename.endswith(".sacc"):
-            data = TwoPointDataSet.load(filename, info)
+            #Based on the statistics type(s), switch between loading with different DataSet objects
+            if 'CL_counts' in statistics_types:
+                if len(statistics_types) > 1:
+                    data = CountsXTwoPointDataSet.load(filename, info)
+                else:
+                    raise ValueError("We cannot load CountsDataSets yet.")
+                    pass #doesn't exist yet
+                    #data = CountsDataSet.load(filename, info)
+            else:
+                data = TwoPointDataSet.load(filename, info)
         else:
             raise ValueError(
                 "We have not written code to load anything "

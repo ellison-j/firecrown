@@ -9,6 +9,11 @@ class MultiplicativeShearBias(SourceSystematic):
     params = ['m']
 
     def adjust_source(self, cosmo, source):
+        """Adjust the shear profile by multiplying it by a
+        factor of 1+m, where m is the multiplicative shear
+        bias. Fail if the source cannot be adjusted (?).
+        
+        """
         if self.adjust_requirements(source):
             source.scaling *= (1.0 + self.values['m'])
             return 0
